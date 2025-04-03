@@ -229,7 +229,7 @@ def go_back_to_roles(window):
 
 def open_face(username):
     import face.face
-    face.face.start_button(username)
+    face.face.update_frame(username)
 
 def open_admin_dashboard():
     import admin_dashboard 
