@@ -3,7 +3,6 @@ import tkinter as tk
 from tkinter import messagebox
 from PIL import Image, ImageTk
 import face_recognition
-from voting import launch_voting
 
 # Initialize the Tkinter window
 root = tk.Tk()
@@ -51,13 +50,14 @@ def update_frame():
     root.after(10, update_frame)
 
 # Start the voting process
-def start_voting():
+def start_voting(username):
     # Check if a face is detected before proceeding
     if "Ready to vote." in status_text.get():
         messagebox.showinfo("Authentication", "Face authentication successful. You can now vote!")
         # Proceed with the voting process (Placeholder)
         print("Voting process started.")
-        launch_voting()
+        from voting import launch_voting
+        launch_voting(username)
     else:
         messagebox.showerror("Authentication Failed", "No face detected. Please ensure your face is clearly visible.")
         

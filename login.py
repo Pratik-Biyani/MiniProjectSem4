@@ -6,7 +6,6 @@ import random
 import string
 import super_admin  # Import the super admin module
 import admin_dashboard
-from face.face import Face
 
 API_URL = "http://127.0.0.1:5000"
 
@@ -198,6 +197,8 @@ def show_login_page(role):
             messagebox.showinfo("Success", data["message"])
             login_window.destroy()
             if data["role"] == "Voter":
+                from face.face import update_frame
+                update_frame(username)
                 open_voting_portal(username)
             elif data["role"] == "Admin": 
                 open_admin_dashboard()
