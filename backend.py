@@ -53,7 +53,7 @@ def submit_vote():
     cursor.execute("UPDATE voters SET has_voted = 'Yes' WHERE username=?", (username,))
 
     # Update vote count for the selected party
-    cursor.execute("UPDATE votes1 SET vote_count = vote_count + 1 WHERE party_name=?", (party_name,))
+    cursor.execute("UPDATE votes2 SET vote_count = vote_count + 1 WHERE party_name=?", (party_name,))
 
     conn.commit()
     conn.close()

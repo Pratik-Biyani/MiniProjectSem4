@@ -61,7 +61,7 @@ def launch_voting(username):
     timer_label.pack()
 
     # Party Names, Symbols, and Colors
-    parties = ["COMPUTER", "IT", "AI&DS", "EXTC", "CHEMICAL"]
+    parties = ["Bhartiya Janta Party", "Aam Aadmi Party", "Congress", "Communist Party of India", "Samajwadi Party"]
     symbols = ["🌙", "🔥", "⭐", "🚀", "🌿"]
     colors = ["#a8cce6", "#f5b7b1", "#a9dfbf", "#f9e79f", "#d2b4de"]  
 
@@ -74,7 +74,7 @@ def launch_voting(username):
     # Create buttons dynamically
     for i, party in enumerate(parties):
         btn = tk.Button(button_frame, text=f"{party} {symbols[i]}", font=("Arial", 14, "bold"),
-                        bg=colors[i], fg="black", width=15, height=2, relief="raised",
+                        bg=colors[i], fg="black", width=25, height=3, relief="raised",
                         command=lambda party=party: submit_vote(username, party))  
         btn.default_bg = colors[i]  
         btn.bind("<Enter>", on_enter)  

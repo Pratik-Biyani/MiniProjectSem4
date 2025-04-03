@@ -197,8 +197,7 @@ def show_login_page(role):
             messagebox.showinfo("Success", data["message"])
             login_window.destroy()
             if data["role"] == "Voter":
-                from face.face import update_frame
-                update_frame(username)
+                open_face(username)
                 open_voting_portal(username)
             elif data["role"] == "Admin": 
                 open_admin_dashboard()
@@ -224,9 +223,13 @@ def go_back_to_roles(window):
     window.destroy()
     show_role_selection()
 
-def open_voting_portal(username):
-    import voting
-    voting.launch_voting(username)
+# def open_voting_portal(username):
+#     import voting
+#     voting.launch_voting(username)
+
+def open_face(username):
+    import face.face
+    face.face.start_button(username)
 
 def open_admin_dashboard():
     import admin_dashboard 

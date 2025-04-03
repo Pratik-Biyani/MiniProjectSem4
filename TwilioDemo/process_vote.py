@@ -5,7 +5,7 @@ def process_vote(username):
     """
     Reads voter details from 'voters.csv' and sends a WhatsApp confirmation.
     """
-    with open("voters.csv", "r") as file:
+    with open("C:/Users/Pratik/Desktop/Coding/EvotingPortalSem4/login_python/login_python/TwilioDemo/voters.csv", "r") as file:
         reader = csv.DictReader(file)
         for row in reader:
             if row["Name"] == username:

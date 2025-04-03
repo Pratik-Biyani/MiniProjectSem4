@@ -18,13 +18,13 @@ def update_live_voting_counts(voter_count_label, votes_labels):
     total_voters = cursor.fetchone()[0]
 
     # Get vote counts for each party
-    cursor.execute("SELECT party_name, vote_count FROM votes1")  # Updated table name
+    cursor.execute("SELECT party_name, vote_count FROM votes2")  # Updated table name
     votes_data = dict(cursor.fetchall())  # Convert list to dictionary for easy lookup
     conn.close()
 
     voter_count_label.config(text=f"Voters Count: {total_voters}")
 
-    parties = ["COMPUTER", "IT", "AI&DS", "EXTC", "CHEMICAL"]
+    parties = ["Bhartiya Janta Party", "Aam Aadmi Party", "Congress", "Communist Party of India", "Samajwadi Party"]
     emojis = ["🌙", "🔥", "⭐", "🚀", "🌿"]
 
     for i in range(5):
@@ -36,11 +36,11 @@ def terminate_election(voter_count_label, votes_labels):
     conn = connect_db()
     cursor = conn.cursor()
     
-    cursor.execute("DELETE FROM votes1")  # Updated table name
+    cursor.execute("DELETE FROM votes2")  # Updated table name
     cursor.execute("UPDATE voters SET has_voted = 'No'")
     
     # Reset votes count
-    cursor.executemany("INSERT OR REPLACE INTO votes1 (party_name, vote_count) VALUES (?, ?)",  # Updated table name
+    cursor.executemany("INSERT OR REPLACE INTO votes2 (party_name, vote_count) VALUES (?, ?)",  # Updated table name
                        [("COMPUTER", 0), ("IT", 0), ("AI&DS", 0), ("EXTC", 0), ("CHEMICAL", 0)])
 
     conn.commit()

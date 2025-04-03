@@ -9,7 +9,7 @@ def setup_database():
                         username TEXT PRIMARY KEY,
                         has_voted TEXT DEFAULT 'No')''')
 
-    cursor.execute('''CREATE TABLE IF NOT EXISTS votes1 (
+    cursor.execute('''CREATE TABLE IF NOT EXISTS votes2 (
                         party_name TEXT PRIMARY KEY,
                         vote_count INTEGER DEFAULT 0)''')
 
@@ -21,8 +21,8 @@ def setup_database():
     
     cursor.execute("INSERT OR IGNORE INTO election_status (id, is_active) VALUES (1, 1)")
 
-    parties = [("COMPUTER", 0), ("IT", 0), ("AI&DS", 0), ("EXTC", 0), ("CHEMICAL", 0)]
-    cursor.executemany("INSERT OR IGNORE INTO votes1 (party_name, vote_count) VALUES (?, ?)", parties)
+    parties = [("Bhartiya Janta Party", 0), ("Aam Aadmi Party", 0), ("Congress", 0), ("Communist Party of India", 0), ("Samajwadi Party", 0)]
+    cursor.executemany("INSERT OR IGNORE INTO votes2 (party_name, vote_count) VALUES (?, ?)", parties)
 
 
     cursor.execute('''CREATE TABLE IF NOT EXISTS users (

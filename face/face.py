@@ -55,17 +55,21 @@ def start_voting(username):
     if "Ready to vote." in status_text.get():
         messagebox.showinfo("Authentication", "Face authentication successful. You can now vote!")
         # Proceed with the voting process (Placeholder)
-        print("Voting process started.")
-        from voting import launch_voting
-        launch_voting(username)
+        print(f"Voting process started for {username}.")
+        # Assuming you have a 'voting.py' file with a 'launch_voting' function.
+        try:
+            from voting import launch_voting
+            launch_voting(username)
+        except Exception as e:
+            messagebox.showerror("Error", f"An error occurred: {e}")
     else:
         messagebox.showerror("Authentication Failed", "No face detected. Please ensure your face is clearly visible.")
-        
+
 # Stop the voting process (Stop face recognition)
 def stop_voting():
     messagebox.showinfo("Voting Stopped", "Face recognition stopped. Thank you for using the E-Voting Portal.")
     cap.release()
-    root.quit()
+    root.quit()  # Close the Tkinter window
 
 # Instructions Label
 instructions = tk.Label(root, text="Please position your face in front of the camera for authentication.", 
@@ -76,13 +80,19 @@ instructions.pack(pady=10)
 status_label = tk.Label(root, textvariable=status_text, font=("Helvetica", 12), bg="#f5f5f5")
 status_label.pack(pady=10)
 
+# Username Entry Field
+username_label = tk.Label(root, text="Enter Username:", font=("Helvetica", 12), bg="#f5f5f5")
+username_label.pack(pady=5)
+username_entry = tk.Entry(root, font=("Helvetica", 12))
+username_entry.pack(pady=5)
+
 # Start/Stop Buttons Frame
 button_frame = tk.Frame(root, bg="#f5f5f5")
 button_frame.pack(pady=20)
 
 # Start Voting Button
 start_button = tk.Button(button_frame, text="Start Voting", font=("Helvetica", 14), bg="#4CAF50", fg="white", 
-                         command=start_voting, width=15)
+                         command=lambda: start_voting(username_entry.get()), width=15)
 start_button.grid(row=0, column=0, padx=20)
 
 # Stop Voting Button
@@ -100,5 +110,5 @@ update_frame()
 # Start the Tkinter event loop
 root.mainloop()
 
-# Release the capture when the window is closed
+# Ensure the capture is released when the window is closed
 cap.release()

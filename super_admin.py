@@ -90,7 +90,7 @@ class ECAdminPage:
         cursor = conn.cursor()
 
         # Fetch party votes
-        cursor.execute("SELECT party_name, vote_count FROM votes1")
+        cursor.execute("SELECT party_name, vote_count FROM votes2")
         party_results = cursor.fetchall()
 
         # Separate parties and votes
