@@ -235,6 +235,10 @@ def open_admin_dashboard():
     import admin_dashboard 
     admin_dashboard.launch_admin_dashboard()
 
+def open_news_portal():
+    import news
+    news.launch_news_portal()
+
 def show_role_selection():
     global role_selection_window
     role_selection_window = tk.Tk()
@@ -277,7 +281,20 @@ def show_role_selection():
                         font=("Arial", 12, "bold"), 
                         width=20, 
                         relief='flat')
-        btn.pack(pady=10)
+        btn.pack(pady=6)
+
+     # Add a button to open the election news portal
+    news_button = tk.Button(button_frame,
+                            text="Election News",
+                            command=open_news_portal,
+                            bg="#1a73e8",
+                            fg='white',
+                            font=("Arial", 12, "bold"),
+                            width=20,
+                            relief='flat')
+    news_button.pack(pady=6)
+
+ 
 
     role_selection_window.mainloop()
 
