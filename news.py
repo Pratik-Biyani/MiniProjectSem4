@@ -94,7 +94,7 @@ language_var = tk.StringVar(value="en")
 ttk.Label(top_frame, text="Language:").grid(row=0, column=0, padx=5)
 
 language_menu = ttk.Combobox(top_frame, textvariable=language_var,
-                             values=["en", "hi", "fr", "de"],
+                             values=["en", "hi"],
                              font=("Segoe UI", 10),
                              width=10)
 language_menu.grid(row=0, column=1, padx=5)
