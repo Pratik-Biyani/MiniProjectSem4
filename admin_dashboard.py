@@ -13,17 +13,22 @@ def update_live_voting_counts(voter_count_label, votes_labels):
     conn = connect_db()
     cursor = conn.cursor()
 
+    # Use votes2 table consistently for all vote counts
+    cursor.execute("SELECT SUM(vote_count) FROM votes2")
+    total_votes_cast = cursor.fetchone()[0] or 0 
+
     # Get total voters count
     cursor.execute("SELECT COUNT(*) FROM voters")
     total_voters = cursor.fetchone()[0]
 
     # Get vote counts for each party
-    cursor.execute("SELECT party_name, vote_count FROM votes2")  # Updated table name
+    cursor.execute("SELECT party_name, vote_count FROM votes2")
     votes_data = dict(cursor.fetchall())  # Convert list to dictionary for easy lookup
     conn.close()
 
-    voter_count_label.config(text=f"Voters Count: {total_voters}")
+    voter_count_label.config(text=f"Total Votes Cast: {total_votes_cast}")
 
+    # Make sure these match your actual party names in the database
     parties = ["Bhartiya Janta Party", "Aam Aadmi Party", "Congress", "Communist Party of India", "Samajwadi Party"]
     emojis = ["🌙", "🔥", "⭐", "🚀", "🌿"]
 
@@ -36,12 +41,16 @@ def terminate_election(voter_count_label, votes_labels):
     conn = connect_db()
     cursor = conn.cursor()
     
-    cursor.execute("DELETE FROM votes2")  # Updated table name
+    # Delete all existing votes
+    cursor.execute("DELETE FROM votes2")
+    
+    # Reset voter status
     cursor.execute("UPDATE voters SET has_voted = 'No'")
     
-    # Reset votes count
-    cursor.executemany("INSERT OR REPLACE INTO votes2 (party_name, vote_count) VALUES (?, ?)",  # Updated table name
-                       [("COMPUTER", 0), ("IT", 0), ("AI&DS", 0), ("EXTC", 0), ("CHEMICAL", 0)])
+    # Reset votes count for each party
+    parties = ["Bhartiya Janta Party", "Aam Aadmi Party", "Congress", "Communist Party of India", "Samajwadi Party"]
+    for party in parties:
+        cursor.execute("INSERT INTO votes2 (party_name, vote_count) VALUES (?, ?)", (party, 0))
 
     conn.commit()
     conn.close()
@@ -157,18 +166,32 @@ def launch_admin_dashboard():
     logout_button.grid(row=2, column=1, padx=10, pady=5)
 
     # Vote count labels
-    voter_count_label = tk.Label(admin_root, text="Voters Count: 0", font=("Arial", 14), bg="#D3D3D3")
+    voter_count_label = tk.Label(admin_root, text="Total Votes Cast: 0", font=("Arial", 14), bg="#D3D3D3")
     votes_labels = [
-        tk.Label(admin_root, text="COMPUTER Votes (🌙): 0", bg="#D3D3D3"),
-        tk.Label(admin_root, text="IT Votes (🔥): 0", bg="#D3D3D3"),
-        tk.Label(admin_root, text="AI&DS Votes (⭐): 0", bg="#D3D3D3"),
-        tk.Label(admin_root, text="EXTC Votes (🚀): 0", bg="#D3D3D3"),
-        tk.Label(admin_root, text="CHEMICAL Votes (🌿): 0", bg="#D3D3D3"),
+        tk.Label(admin_root, text="Bhartiya Janta Party Votes (🌙): 0", bg="#D3D3D3"),
+        tk.Label(admin_root, text="Aam Aadmi Party Votes (🔥): 0", bg="#D3D3D3"),
+        tk.Label(admin_root, text="Congress Votes (⭐): 0", bg="#D3D3D3"),
+        tk.Label(admin_root, text="Communist Party of India Votes (🚀): 0", bg="#D3D3D3"),
+        tk.Label(admin_root, text="Samajwadi Party Votes (🌿): 0", bg="#D3D3D3"),
     ]
 
     voter_count_label.pack()
     for label in votes_labels:
         label.pack()
 
+    # Update the vote count display immediately
     update_live_voting_counts(voter_count_label, votes_labels)
+    
+    # Set up periodic refresh of vote counts (every 5 seconds)
+    def refresh_counts():
+        update_live_voting_counts(voter_count_label, votes_labels)
+        admin_root.after(5000, refresh_counts)  # Schedule next refresh
+    
+    # Start the refresh cycle
+    admin_root.after(5000, refresh_counts)
+    
     admin_root.mainloop()
+
+# If this file is run directly, launch the admin dashboard
+if __name__ == "__main__":
+    launch_admin_dashboard()

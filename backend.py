@@ -15,20 +15,30 @@ def login():
     conn = sqlite3.connect("evoting.db")
     cursor = conn.cursor()
 
+    cursor.execute("SELECT is_active FROM election_status WHERE id = 1")
+    election_status = cursor.fetchone()
+
     cursor.execute("SELECT password, security_ans1, security_ans2, role, voted FROM users WHERE username=?", (username,))
     user = cursor.fetchone()
     
-    conn.close()
-
     if not user or not checkpw(password.encode(), user[0].encode()):
+        conn.close()
         return jsonify({"success": False, "message": "Invalid credentials!"})
+    
+    # Check if election is on hold and if the user is a Voter
+    if user[3] == "Voter" and election_status and election_status[0] == 0:
+        conn.close()
+        return jsonify({"success": False, "message": "Election is currently on hold. Voter login is not allowed."})
 
     if user[3] == "Voter" and user[4] == 1:
+        conn.close()
         return jsonify({"success": False, "message": "You have already voted!"})
 
     if user[1] != security_ans1 or user[2] != security_ans2:
+        conn.close()
         return jsonify({"success": False, "message": "Incorrect security answers!"})
-
+    
+    conn.close()
     return jsonify({"success": True, "message": "Login successful!", "role": user[3]})
 
 @app.route("/submit_vote", methods=["POST"])

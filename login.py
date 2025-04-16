@@ -223,9 +223,7 @@ def go_back_to_roles(window):
     window.destroy()
     show_role_selection()
 
-# def open_voting_portal(username):
-#     import voting
-#     voting.launch_voting(username)
+
 
 def open_face(username):
     import face.face
@@ -283,7 +281,7 @@ def show_role_selection():
                         relief='flat')
         btn.pack(pady=6)
 
-     # Add a button to open the election news portal
+     
     news_button = tk.Button(button_frame,
                             text="Election News",
                             command=open_news_portal,
