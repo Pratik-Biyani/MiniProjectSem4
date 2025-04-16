@@ -6,7 +6,7 @@ def reset_votes():
 
     cursor.execute("UPDATE users SET voted = 0") 
     cursor.execute("UPDATE voters SET has_voted = 'No'")  
-    cursor.execute("UPDATE votes1 SET vote_count = 0")  
+    cursor.execute("UPDATE votes2 SET vote_count = 0")  
     conn.commit()
     conn.close()
 
