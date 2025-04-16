@@ -13,6 +13,9 @@ def update_live_voting_counts(voter_count_label, votes_labels):
     conn = connect_db()
     cursor = conn.cursor()
 
+    cursor.execute("SELECT SUM(vote_count) FROM votes1")  # Summing vote counts from all parties
+    total_votes_cast = cursor.fetchone()[0] or 0 
+
     # Get total voters count
     cursor.execute("SELECT COUNT(*) FROM voters")
     total_voters = cursor.fetchone()[0]
@@ -22,7 +25,7 @@ def update_live_voting_counts(voter_count_label, votes_labels):
     votes_data = dict(cursor.fetchall())  # Convert list to dictionary for easy lookup
     conn.close()
 
-    voter_count_label.config(text=f"Voters Count: {total_voters}")
+    voter_count_label.config(text=f"Total Votes Cast: {total_votes_cast}")
 
     parties = ["Bhartiya Janta Party", "Aam Aadmi Party", "Congress", "Communist Party of India", "Samajwadi Party"]
     emojis = ["🌙", "🔥", "⭐", "🚀", "🌿"]
@@ -157,7 +160,7 @@ def launch_admin_dashboard():
     logout_button.grid(row=2, column=1, padx=10, pady=5)
 
     # Vote count labels
-    voter_count_label = tk.Label(admin_root, text="Voters Count: 0", font=("Arial", 14), bg="#D3D3D3")
+    voter_count_label = tk.Label(admin_root, text = "Total Votes Cast: 0" font=("Arial", 14), bg="#D3D3D3")
     votes_labels = [
         tk.Label(admin_root, text="COMPUTER Votes (🌙): 0", bg="#D3D3D3"),
         tk.Label(admin_root, text="IT Votes (🔥): 0", bg="#D3D3D3"),
