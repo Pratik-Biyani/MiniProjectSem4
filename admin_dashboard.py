@@ -160,7 +160,7 @@ def launch_admin_dashboard():
     logout_button.grid(row=2, column=1, padx=10, pady=5)
 
     # Vote count labels
-    voter_count_label = tk.Label(admin_root, text = "Total Votes Cast: 0" font=("Arial", 14), bg="#D3D3D3")
+    voter_count_label = tk.Label(admin_root, text = "Total Votes Cast: 0", font=("Arial", 14), bg="#D3D3D3")
     votes_labels = [
         tk.Label(admin_root, text="COMPUTER Votes (🌙): 0", bg="#D3D3D3"),
         tk.Label(admin_root, text="IT Votes (🔥): 0", bg="#D3D3D3"),
